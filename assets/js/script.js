@@ -15,6 +15,7 @@ async function getStatus(e) {
     if(response.ok){
         displayStatus(data.expiry);
     }else{
+        displayException(data);
         throw new Error(data.error);
     }
 }
@@ -55,9 +56,24 @@ async function postForm(e){
         displayErrors(data);
         console.log(data);
     }else{
+        displayException(data)
         throw new Error(data.error);
     }
 };
+
+function displayException(data){
+    let heading = `An exception has occurred.`;
+    let results = `<div>The API returned status code: ${data.status_code}</div>`;
+    
+    results += `<div>Error number: <strong>${data.error_no}</strong></div>`
+    results += `<div>Error text: <strong>${data.error}</strong></div>`
+
+    document.getElementById('resultsModalTitle').innerHTML = heading;
+    document.getElementById('results-content').innerHTML = results
+
+    resultsModal.show();
+};
+
 
 function displayErrors(data){
     let heading = `JS Hints results for ${data.file}`;
